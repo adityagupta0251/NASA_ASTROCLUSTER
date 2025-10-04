@@ -1,11 +1,10 @@
-"use client";
 import React, { useState } from 'react';
 import { Code, Cpu, Globe, Database, Layers, Terminal, ChevronDown, ChevronUp, TrendingUp, BarChart3 } from 'lucide-react';
 
 export default function ToolsPage() {
-  const [expandedSection, setExpandedSection] = useState('ml');
+  const [expandedSection, setExpandedSection] = useState<string | null>('ml');
 
-  const toggleSection = (section) => {
+  const toggleSection = (section: string) => {
     setExpandedSection(expandedSection === section ? null : section);
   };
 
