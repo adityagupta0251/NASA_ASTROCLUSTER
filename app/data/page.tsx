@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
-import dynamic from "next/dynamic";
 import { PageWrapper } from "../components/page-wrapper";
 import {
   Activity,
@@ -35,8 +34,7 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { saveAndStore, loadStored, clearSessionStorage } from "@/lib/storage";
 
 // Dynamically import Plotly with SSR disabled
-const Plot = dynamic(() => import("react-plotly.js"), { ssr: false });
-
+import Plot from "react-plotly.js";
 interface ModelStatus {
   status: string;
   file_size_bytes: number;
@@ -75,14 +73,14 @@ interface PredictData {
 
 const STORAGE_KEYS = {
   health: "data_health",
-  features: "data_features", 
+  features: "data_features",
   modelInfo: "data_modelInfo",
-  predictions: "data_predictions"
+  predictions: "data_predictions",
 };
 
 // AI/ML storage keys to access user's actual predictions
 const AIML_STORAGE_KEYS = {
-  predictions: "aiml_predictions"
+  predictions: "aiml_predictions",
 };
 
 export default function DataPage() {
@@ -101,11 +99,16 @@ export default function DataPage() {
   // Load stored data on mount
   useEffect(() => {
     const storedHealth = loadStored<HealthData>(STORAGE_KEYS.health);
-    const storedFeatures = loadStored<{feature_names: string[], feature_count: number}>(STORAGE_KEYS.features);
+    const storedFeatures = loadStored<{
+      feature_names: string[];
+      feature_count: number;
+    }>(STORAGE_KEYS.features);
     const storedModelInfo = loadStored<ModelInfo[]>(STORAGE_KEYS.modelInfo);
-    
+
     // Load user's actual predictions from AI/ML page instead of sample data
-    const storedPredictions = loadStored<PredictData>(AIML_STORAGE_KEYS.predictions);
+    const storedPredictions = loadStored<PredictData>(
+      AIML_STORAGE_KEYS.predictions
+    );
 
     if (storedHealth) setHealth(storedHealth);
     if (storedFeatures) setFeatures(storedFeatures);
@@ -120,10 +123,14 @@ export default function DataPage() {
   const fetchData = useCallback(async () => {
     setLoading(true);
     setError(null);
-    
+
     // Clear session storage on refresh (but keep AI/ML predictions)
-    clearSessionStorage([STORAGE_KEYS.health, STORAGE_KEYS.features, STORAGE_KEYS.modelInfo]);
-    
+    clearSessionStorage([
+      STORAGE_KEYS.health,
+      STORAGE_KEYS.features,
+      STORAGE_KEYS.modelInfo,
+    ]);
+
     try {
       const [healthRes, featuresRes, modelInfoRes] = await Promise.all([
         fetch("http://72.60.168.212:8000/health"),
@@ -149,15 +156,14 @@ export default function DataPage() {
       setModelInfo(modelInfoData);
 
       // Load user's actual predictions from AI/ML page (no sample prediction call)
-      const userPredictions = loadStored<PredictData>(AIML_STORAGE_KEYS.predictions);
+      const userPredictions = loadStored<PredictData>(
+        AIML_STORAGE_KEYS.predictions
+      );
       if (userPredictions) {
         setPredictions(userPredictions);
       }
-      
     } catch (err) {
-      setError(
-        err instanceof Error ? err.message : "Unknown error occurred"
-      );
+      setError(err instanceof Error ? err.message : "Unknown error occurred");
     } finally {
       setLoading(false);
     }
@@ -180,10 +186,7 @@ export default function DataPage() {
 
   if (loading && !health) {
     return (
-      <PageWrapper
-        title="Data Analysis"
-        description="Loading model data..."
-      >
+      <PageWrapper title="Data Analysis" description="Loading model data...">
         <div className="flex justify-center items-center h-64">
           <Loader2 className="h-8 w-8 animate-spin text-primary" />
         </div>
@@ -207,7 +210,8 @@ export default function DataPage() {
               </button>
             </div>
             <p className="text-muted-foreground mb-4">
-              Upload your own CSV data and get real-time exoplanet predictions from our trained models.
+              Upload your own CSV data and get real-time exoplanet predictions
+              from our trained models.
             </p>
             <div className="flex gap-2">
               <button
@@ -241,9 +245,7 @@ export default function DataPage() {
             disabled={loading}
             className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg font-medium hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-primary/40 disabled:opacity-50 transition"
           >
-            <RefreshCw
-              className={`h-4 w-4 ${loading ? "animate-spin" : ""}`}
-            />
+            <RefreshCw className={`h-4 w-4 ${loading ? "animate-spin" : ""}`} />
             Refresh Data
           </button>
         </div>
@@ -267,27 +269,21 @@ export default function DataPage() {
                 </div>
                 <div>
                   <CardTitle>System Health</CardTitle>
-                  <CardDescription>
-                    Model status and file sizes
-                  </CardDescription>
+                  <CardDescription>Model status and file sizes</CardDescription>
                 </div>
               </div>
             </CardHeader>
             <CardContent>
               <div className="flex items-center gap-2 mb-4">
                 <CheckCircle2 className="h-5 w-5 text-accent" />
-                <span className="font-semibold">
-                  Status: {health.status}
-                </span>
+                <span className="font-semibold">Status: {health.status}</span>
               </div>
               <Table>
                 <TableHeader>
                   <TableRow>
                     <TableHead>Model</TableHead>
                     <TableHead>Status</TableHead>
-                    <TableHead className="text-right">
-                      File Size
-                    </TableHead>
+                    <TableHead className="text-right">File Size</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -422,7 +418,9 @@ export default function DataPage() {
                       (k) => modelNames[k as keyof typeof modelNames]
                     ),
                     y: Object.values(predictions.models).map(
-                      (m) => m.probabilities.reduce((a, b) => a + b, 0) / m.probabilities.length
+                      (m) =>
+                        m.probabilities.reduce((a, b) => a + b, 0) /
+                        m.probabilities.length
                     ),
                     type: "bar" as const,
                     marker: {
@@ -433,40 +431,54 @@ export default function DataPage() {
                       },
                     },
                     text: Object.values(predictions.models).map(
-                      (m) => `${((m.probabilities.reduce((a, b) => a + b, 0) / m.probabilities.length) * 100).toFixed(2)}%`
+                      (m) =>
+                        `${(
+                          (m.probabilities.reduce((a, b) => a + b, 0) /
+                            m.probabilities.length) *
+                          100
+                        ).toFixed(2)}%`
                     ),
                     textposition: "auto" as const,
                   },
                 ]}
                 layout={{
-                  title: "Average Prediction Confidence by Model",
-                  paper_bgcolor: "transparent",
-                  plot_bgcolor: "transparent",
-                  font: { color: "#e5e7eb" },
-                  xaxis: { title: "Model", gridcolor: "#374151" },
-                  yaxis: {
-                    title: "Average Probability",
-                    gridcolor: "#374151",
-                    range: [0, 1],
-                  },
-                  margin: { t: 40, b: 60, l: 60, r: 20 },
+                  title: { text: "Model Probabilities" }, // <-- wrap in object
+                  xaxis: { title: { text: "Models" } },
+                  yaxis: { title: { text: "Probability" } },
                 }}
-                config={{ responsive: true }}
-                className="w-full h-80"
               />
 
               <div className="mt-6">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                   {Object.entries(predictions.models).map(([model, result]) => (
-                    <div key={model} className="rounded-lg bg-muted/50 border border-border p-4">
+                    <div
+                      key={model}
+                      className="rounded-lg bg-muted/50 border border-border p-4"
+                    >
                       <h3 className="font-medium text-sm uppercase tracking-wide mb-2">
-                        {model === 'rf' ? 'Random Forest' : model === 'xgb' ? 'XGBoost' : 'Logistic Regression'}
+                        {model === "rf"
+                          ? "Random Forest"
+                          : model === "xgb"
+                          ? "XGBoost"
+                          : "Logistic Regression"}
                       </h3>
                       <div className="space-y-1 text-sm">
-                        <div>Candidates: {result.predictions.filter(p => p === 1).length}</div>
-                        <div>False Positives: {result.predictions.filter(p => p === 0).length}</div>
+                        <div>
+                          Candidates:{" "}
+                          {result.predictions.filter((p) => p === 1).length}
+                        </div>
+                        <div>
+                          False Positives:{" "}
+                          {result.predictions.filter((p) => p === 0).length}
+                        </div>
                         <div>Total Samples: {result.predictions.length}</div>
-                        <div>Avg. Confidence: {(result.probabilities.reduce((a, b) => a + b, 0) / result.probabilities.length).toFixed(3)}</div>
+                        <div>
+                          Avg. Confidence:{" "}
+                          {(
+                            result.probabilities.reduce((a, b) => a + b, 0) /
+                            result.probabilities.length
+                          ).toFixed(3)}
+                        </div>
                       </div>
                     </div>
                   ))}
@@ -485,7 +497,8 @@ export default function DataPage() {
             <CardContent>
               <div className="text-center py-8">
                 <p className="text-muted-foreground mb-4">
-                  Go to the AI/ML page and upload your exoplanet data to see visualizations here.
+                  Go to the AI/ML page and upload your exoplanet data to see
+                  visualizations here.
                 </p>
                 <button
                   onClick={goToAIML}
