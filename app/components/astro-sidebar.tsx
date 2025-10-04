@@ -21,22 +21,21 @@ import { ParticleField } from "./particle-field"
 
 export function AstroSidebar() {
   const pathname = usePathname()
-  const [active, setActive] = useState<string>("overview")
 
   const items = [
-    { key: "overview", label: "Event Overview", icon: Satellite, href: "#overview" },
-    { key: "aiml", label: "AI/ML Challenge", icon: BrainCircuit, href: "#aiml" },
-    { key: "data", label: "Data Analysis", icon: BarChart3, href: "#data" },
-    { key: "exoplanets", label: "Exoplanets", icon: Orbit, href: "#exoplanets" },
-    { key: "planets", label: "Planets & Moons", icon: Planet, href: "#planets" },
-    { key: "tools", label: "Software Tools", icon: LaptopMinimalCheck, href: "#tools" },
-    { key: "explore", label: "Space Exploration", icon: Rocket, href: "#explore" },
-    { key: "resources", label: "Resources", icon: BookOpen, href: "#resources" },
+    { key: "overview", label: "Event Overview", icon: Satellite, href: "/" },
+    { key: "aiml", label: "AI/ML Challenge", icon: BrainCircuit, href: "/aiml" },
+    { key: "data", label: "Data Analysis", icon: BarChart3, href: "/data" },
+    { key: "exoplanets", label: "Exoplanets", icon: Orbit, href: "/exoplanets" },
+    { key: "planets", label: "Planets & Moons", icon: Planet, href: "/planets" },
+    { key: "tools", label: "Software Tools", icon: LaptopMinimalCheck, href: "/tools" },
+    { key: "explore", label: "Space Exploration", icon: Rocket, href: "/explore" },
+    { key: "resources", label: "Resources", icon: BookOpen, href: "/resources" },
   ]
 
   const extras = [
-    { key: "settings", label: "Settings", icon: Settings, href: "#settings" },
-    { key: "team", label: "Team: Astrocluter", icon: Users, href: "#team" },
+    { key: "settings", label: "Settings", icon: Settings, href: "/settings" },
+    { key: "team", label: "Team: Astrocluter", icon: Users, href: "/team" },
     { key: "github", label: "GitHub Project", icon: Github, href: "https://github.com/" },
   ]
 
@@ -76,13 +75,12 @@ export function AstroSidebar() {
             <nav role="navigation" aria-label="Main">
               <ul className="flex flex-col gap-1">
                 {items.map(({ key, label, icon: Icon, href }) => {
-                  const isActive = active === key
+                  const isActive = pathname === href
                   return (
                     <li key={key}>
                       <Link
                         href={href}
                         aria-current={isActive ? "page" : undefined}
-                        onClick={() => setActive(key)}
                         className={[
                           "group relative flex items-center gap-3 rounded-md px-2 py-2",
                           "focus:outline-none focus:ring-2 focus:ring-primary/40",

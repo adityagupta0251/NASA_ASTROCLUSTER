@@ -8,9 +8,9 @@ import { AstroSidebar } from "../app/components/astro-sidebar"
 import { Suspense } from "react"
 
 export const metadata: Metadata = {
-  title: "v0 App",
-  description: "Created with v0",
-  generator: "v0.app",
+  title: "Astrocluter : A World Away : Hunting for Exoplanets with AI",
+  description: "A Web Interface for AI, Data Analysis, and Space Exploration Modules for NASA Space Apps 2025.",
+  generator: "Team Astrocluter",
 }
 
 export default function RootLayout({
