@@ -34,7 +34,9 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { saveAndStore, loadStored, clearSessionStorage } from "@/lib/storage";
 
 // Dynamically import Plotly with SSR disabled
-import Plot from "react-plotly.js";
+import dynamic from "next/dynamic";
+
+const Plot = dynamic(() => import("react-plotly.js"), { ssr: false });
 interface ModelStatus {
   status: string;
   file_size_bytes: number;
@@ -442,7 +444,7 @@ export default function DataPage() {
                   },
                 ]}
                 layout={{
-                  title: { text: "Model Probabilities" }, // <-- wrap in object
+                  title: { text: "Model Probabilities" },
                   xaxis: { title: { text: "Models" } },
                   yaxis: { title: { text: "Probability" } },
                 }}
