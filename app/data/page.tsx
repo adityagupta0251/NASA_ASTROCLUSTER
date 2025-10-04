@@ -126,9 +126,9 @@ export default function DataPage() {
     
     try {
       const [healthRes, featuresRes, modelInfoRes] = await Promise.all([
-        fetch("http://localhost:8000/health"),
-        fetch("http://localhost:8000/features"),
-        fetch("http://localhost:8000/model_info"),
+        fetch("http://72.60.168.212:8000/health"),
+        fetch("http://72.60.168.212:8000/features"),
+        fetch("http://72.60.168.212:8000/model_info"),
       ]);
 
       if (!healthRes.ok || !featuresRes.ok || !modelInfoRes.ok) {

@@ -117,7 +117,7 @@ export default function AIMLPage() {
         throw new Error(`Invalid data format. Expected ${expectedFeatures} features per row, but found rows with different lengths.`)
       }
 
-      const response = await fetch("http://localhost:8000/predict", {
+      const response = await fetch("http://72.60.168.212:8000/predict", {
         method: "POST",
         headers: { 
           "Content-Type": "application/json",
