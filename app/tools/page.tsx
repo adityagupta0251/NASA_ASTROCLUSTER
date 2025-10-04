@@ -1,3 +1,4 @@
+"use client";
 import React, { useState } from 'react';
 import { Code, Cpu, Globe, Database, Layers, Terminal, ChevronDown, ChevronUp, TrendingUp, BarChart3 } from 'lucide-react';
 
