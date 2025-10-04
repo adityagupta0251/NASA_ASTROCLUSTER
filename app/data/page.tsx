@@ -85,6 +85,8 @@ const AIML_STORAGE_KEYS = {
   predictions: "aiml_predictions",
 };
 
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "";
+
 export default function DataPage() {
   const [health, setHealth] = useState<HealthData | null>(null);
   const [features, setFeatures] = useState<{
@@ -135,9 +137,9 @@ export default function DataPage() {
 
     try {
       const [healthRes, featuresRes, modelInfoRes] = await Promise.all([
-        fetch("http://72.60.168.212:8000/health"),
-        fetch("http://72.60.168.212:8000/features"),
-        fetch("http://72.60.168.212:8000/model_info"),
+        fetch(`${API_BASE_URL}/health`),
+        fetch(`${API_BASE_URL}/features`),
+        fetch(`${API_BASE_URL}/model_info`),
       ]);
 
       if (!healthRes.ok || !featuresRes.ok || !modelInfoRes.ok) {
