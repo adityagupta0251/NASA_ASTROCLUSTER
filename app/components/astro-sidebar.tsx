@@ -14,6 +14,7 @@ import {
   Github,
 } from "lucide-react"
 
+
 export function AstroSidebar() {
   const pathname = usePathname()
 
@@ -38,18 +39,19 @@ export function AstroSidebar() {
       <div className="relative h-full overflow-hidden">
         {/* Starfield background */}
         <div className="fixed inset-0 opacity-10 dark:opacity-20 pointer-events-none">
-          {[...Array(30)].map((_, i) => (
-            <div
-              key={i}
-              className="absolute w-1 h-1 bg-black dark:bg-white rounded-full animate-pulse"
-              style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-                animationDelay: `${Math.random() * 3}s`,
-                animationDuration: `${2 + Math.random() * 3}s`
-              }}
-            />
-          ))}
+          {[...Array(30)].map((_, i) => {
+            return (
+              <div
+                key={i}
+                className="absolute w-1 h-1 bg-black dark:bg-white rounded-full animate-pulse"
+                style={{
+                  left: `${Math.random() * 100}%`,
+                  top: `${Math.random() * 100}%`,
+                  animationDelay: `${Math.random() * 3}s`,
+                  animationDuration: `${2 + Math.random() * 3}s`
+                }} />
+            )
+          })}
         </div>
 
         <div className="relative flex h-full flex-col gap-4 p-3 md:p-4 min-h-0">
