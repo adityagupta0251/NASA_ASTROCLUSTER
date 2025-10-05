@@ -8,11 +8,57 @@ import { AstroSidebar } from "../app/components/astro-sidebar"
 import { Suspense } from "react"
 
 export const metadata: Metadata = {
-  title: "Astrocluter : A World Away : Hunting for Exoplanets with AI",
-  description: "A Web Interface for AI, Data Analysis, and Space Exploration Modules for NASA Space Apps 2025.",
+  // Basic Metadata
+  title: {
+    default: "Astrocluter : A World Away : Hunting for Exoplanets with AI",
+    template: "%s | Astrocluter"
+  },
+  description: "A Web Interface for AI, Data Analysis, and Space Exploration Modules for NASA Space Apps 2025. Discover exoplanets using cutting-edge artificial intelligence and machine learning.",
   generator: "Team Astrocluter",
-}
+  applicationName: "Astrocluter",
+  keywords: [
+    "exoplanets",
+    "AI",
+    "artificial intelligence",
+    "NASA",
+    "space exploration",
+    "data analysis",
+    "machine learning",
+    "astronomy",
+    "space apps",
+    "exoplanet detection",
+    "NASA Space Apps 2025"
+  ],
+  authors: [
+    { name: "Team Astrocluter" }
+  ],
+  creator: "Team Astrocluter",
+  publisher: "Team Astrocluter",
+  
+  // Alternate Languages (add as needed)
+  alternates: {
+    canonical: "https://ai.astrocluter.space"
 
+  },
+
+  // Open Graph Metadata
+  openGraph: {
+    title: "Astrocluter : A World Away : Hunting for Exoplanets with AI",
+    description: "A Web Interface for AI, Data Analysis, and Space Exploration Modules for NASA Space Apps 2025. Discover exoplanets using cutting-edge artificial intelligence and machine learning.",
+    url: "https://ai.astrocluter.space",
+    siteName: "Astrocluter",
+    images: [
+      {
+        url: "https://drive.google.com/file/d/1fpyAE32T9ASpQh-ECFzEjeQm7MwDRzfX/view?usp=drive_link",
+        width: 800,
+        height: 600,
+        alt: "Astrocluter",
+      },
+    ],
+    locale: "en-US",
+    type: "website",
+  },
+}
 export default function RootLayout({
   children,
 }: Readonly<{
